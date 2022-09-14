@@ -1,8 +1,8 @@
 #include "include/vm.hpp"
 #include "include/is.hpp"
+#include "include/logger.hpp"
 
 #include <cstdint>
-#include <iostream>
 #include <stdexcept>
 
 VM::VM(int32_t pc, int32_t *prog, int32_t progLength)
@@ -10,6 +10,7 @@ VM::VM(int32_t pc, int32_t *prog, int32_t progLength)
 
 int32_t VM::fetch() {
   if (PC > programLength) {
+    Logger::error() << "PC exceeded program length\n";
     throw std::runtime_error("Program Counter exceeded program length");
   }
   return program[PC++];
@@ -17,6 +18,7 @@ int32_t VM::fetch() {
 
 int32_t VM::pop() {
   if (SP - 1 < 0) {
+    Logger::error() << "Stack Underflow\n";
     throw std::runtime_error("Stack Underflow");
   }
   return stack[--SP];
@@ -24,6 +26,7 @@ int32_t VM::pop() {
 
 void VM::push(int32_t value) {
   if (SP > STACK_SIZE) {
+    Logger::error() << "Stack Overflow\n";
     throw std::runtime_error("Stack Overflow");
   }
   stack[SP++] = value;
@@ -271,15 +274,19 @@ void VM::run() {
 
     case POPANDPRINT:
       value = pop();
-      std::cout << "PRINT: " << value << std::endl;
+      Logger::info() << "PRINT: " << value << "\n";
 
       break;
 
     case HALT:
-      std::cout << "HALT" << std::endl;
+      Logger::info() << "HALT"
+                     << "\n";
+
       return;
 
     default:
+      Logger::error() << "INVALID OPCODE: " << opcode << "\n";
+
       throw std::runtime_error("Invalid Opcode");
     }
   } while (true);

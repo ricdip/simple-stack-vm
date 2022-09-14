@@ -77,7 +77,7 @@ int main(void) {
   // clang-format on
 
   VM vm(18, factprog, sizeof(factprog) / sizeof(int32_t));
-  // VM vm(0, testprog, sizeof(testprog) / sizeof(int32_t));
+  // VM vm(0, stackoverflowprog, sizeof(stackoverflowprog) / sizeof(int32_t));
 
   vm.run();
 
