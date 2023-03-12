@@ -3,21 +3,21 @@
 A simple C++ implementation of a stack-based virtual machine
 
 ## Dependencies
-- [fd](https://github.com/sharkdp/fd) package
+- [fd](https://github.com/sharkdp/fd) package: used in the Makefile
 
 ## Building the application
 ```
-make build
+user@host:~$ make build
 ```
 
 ## Running the application
 ```
-make run
+user@host:~$ make run
 ```
 
 ## Clean executables
 ```
-make clean
+user@host:~$ make clean
 ```
 
 ## References
