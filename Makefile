@@ -1,38 +1,38 @@
-# compiler options
-CC = g++
-CFLAGS = -pedantic -Wall -Wextra -Werror
-CFLAGSDEBUG = -pedantic -Wall -Wextra -Werror -fsanitize=address -g
+include config.mk
 
+.DEFAULT_GOAL := help
 
-# sources and objects
-SRC = $(shell fd --type f -e cpp)
-FILES = $(shell fd --type f -e cpp -e hpp)
-OBJ = main.exe
-OBJDEBUG = main_debug.exe
+.SILENT: help
+.PHONY: help # Display this help message
+help:
+	@grep -E '^.PHONY:.+#.+' Makefile | sed 's/.PHONY: //' | awk -F ' # ' '{printf "%-15s %s\n", $$1, $$2}'
 
-
-# rules
+.PHONY: build # Build application
 build: $(SRC)
 	@echo "*** Building application files ***"
-	clang-format -i $(FILES)
 	$(CC) $(CFLAGS) $(SRC) -o $(OBJ)
 
+.PHONY: build_debug # Build debug application
 build_debug: $(SRC)
 	@echo "*** Building application files for debug ***"
 	$(CC) $(CFLAGSDEBUG) $(SRC) -o $(OBJDEBUG)
 
+.PHONY: clean # Clean application files
 clean:
 	@echo "*** Cleaning application files ***"
 	rm -f $(OBJ)
 	rm -f $(OBJDEBUG)
 
+.PHONY: run # Run application
 run: build
 	@echo "*** Running application ***"
 	./$(OBJ)
 
+.PHONY: run_debug # Run debug application
 run_debug: build_debug
 	@echo "*** Running debug application ***"
 	./$(OBJDEBUG)
 
-
-.PHONY: build build_debug clean run run_debug
+.PHONY: format # Format source files
+format:
+	clang-format -i $(FILES)

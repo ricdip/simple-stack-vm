@@ -8,7 +8,7 @@ public:
    * @brief Function used to do INFO level logging
    */
   static std::ostream &info();
-  
+
   /**
    * @brief Function used to do ERROR level logging
    */
